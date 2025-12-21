@@ -12,6 +12,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class BattleRegistryMixin {
     @Inject(method = "onPlayerDisconnect", at = @At(value = "HEAD"), remap = false)
     private void onPlayerDisconnect(ServerPlayer player, CallbackInfo ci) {
-        AspectUtils.battleDisconnecter.add(player.getUUID());
+        if (BattleRegistry.getBattleByParticipatingPlayer(player) != null) {
+            AspectUtils.battleDisconnecter.add(player.getUUID());
+        }
     }
 }

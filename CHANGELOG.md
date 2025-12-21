@@ -3,3 +3,4 @@
 - Added tera pouches for tera shards
 - Fixed custom mega's like x,y being bugged thanks to people at navas
 - Fixed outside mega's glitch allowing outside mega
+- Fixed the type changing not working with z crystals

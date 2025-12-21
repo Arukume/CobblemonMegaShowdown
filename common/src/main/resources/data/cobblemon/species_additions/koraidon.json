@@ -1,7 +1,7 @@
 {
-  "target": "cobblemon:miraidon",
+  "target": "cobblemon:koraidon",
   "implemented": true,
-  "baseScale": 0.75,
+  "baseScale": 0.70,
   "hitbox": {
     "width": 2.5,
     "height": 2.75,

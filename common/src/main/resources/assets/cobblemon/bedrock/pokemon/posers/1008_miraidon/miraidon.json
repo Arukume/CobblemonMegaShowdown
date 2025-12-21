@@ -1,81 +1,129 @@
 {
-  "portraitScale": 1.09,
+  "portraitScale": 1.00,
   "portraitTranslation": [
     -0.23,
-    4.33,
+    6.33,
     0
   ],
   "profileScale": 0.33,
   "profileTranslation": [
     0.15,
-    1.53,
+    2.20,
     0
   ],
+  "rootBone": "miraidon_root",
   "animations": {
     "cry": "q.bedrock_stateful('miraidon', 'cry')"
   },
   "poses": {
-    "battle-standing": {
-      "poseTypes": [
-        "STAND"
-      ],
-      "isBattle": true,
-      "animations": [
-        "q.look('head')",
-        "q.bedrock('miraidon', 'battle_idle')"
-      ],
-      "quirks": [        {
-          "name": "blink",
-          "animations": [
-            "bedrock(miraidon, blink)"
-          ]
-        }
-      ]
-    },
-    "standing": {
-      "poseTypes": [
-        "STAND",
-        "NONE",
-        "PORTRAIT",
-        "PROFILE"
-      ],
+    "portrait": {
+      "poseTypes": ["PORTRAIT", "PROFILE"],
       "isBattle": false,
+      "condition": "q.has_entity ? !q.in_air : 1.0",
+      "animations": ["q.look('head')", "q.bedrock('miraidon', 'battle_idle')"]
+    },
+	"standing": {
+      "poseTypes": ["STAND", "NONE"],
+      "isBattle": false,
+      "animations": ["q.look('head')", "q.bedrock('miraidon', 'ground_idle')"],
+      "condition": "!q.is_ridden"
+    },
+    "battle-standing": {
+      "poseTypes": ["STAND"],
+      "isBattle": true,
+      "isTouchingWater": false,
+      "animations": [
+        "q.bedrock('miraidon', 'battle_idle')"
+      ]
+    },	
+    "ride_jump": {
+      "poseTypes": ["WALK","STAND", "FLOAT", "NONE"],
+      "isBattle": false,
+      "condition": "q.in_air && q.is_ridden && q.has_entity",
       "animations": [
         "q.look('head')",
-        "q.bedrock('miraidon', 'ground_idle')"
+		"q.bedrock('miraidon','ride_jump')"
       ],
-      "quirks": [
-        {
-          "name": "blink",
-          "animations": [
-            "bedrock(miraidon, blink)"
-          ]
-        }
-      ]
+      "transformTicks": 5,
+      "transformToTicks": 5
     },
     "walking": {
-      "poseTypes": [
-        "WALK"
-      ],
+      "poseTypes": ["WALK", "SWIM"],
+	  "isBattle": false,
+      "animations": ["q.look('head')", "q.bedrock('miraidon', 'ground_walk')"],
+      "condition": "!q.is_ridden"
+    },
+    "mount_idle": {
+      "poseTypes": ["STAND"],
+      "isBattle": false,
+	  "isTouchingWater": false,
       "animations": [
         "q.look('head')",
-        "q.bedrock('miraidon', 'ground_walk')"
+        "q.bedrock('miraidon', 'ride_ground_idle')"
       ],
-      "quirks": [
-        {
-          "name": "blink",
-          "animations": [
-            "bedrock(miraidon, blink)"
-          ]
-        }
+      "condition": "q.is_ridden && !q.in_air"
+    },
+    "mount_walk": {
+      "poseTypes": ["WALK"],
+      "isBattle": false,
+	  "isTouchingWater": false,
+      "condition": "q.is_ridden && !q.is_sprinting && !q.is_air && q.has_entity",
+      "animations": [
+        "q.look('head')",
+        "q.bedrock('miraidon', 'ride_ground_walk')"
+      ],
+      "transformTicks": 5,
+      "transformToTicks": 5
+    },
+    "mount_run": {
+      "poseTypes": ["WALK"],
+      "isBattle": false,
+	  "isTouchingWater": false,
+      "condition": "!q.in_air && q.is_sprinting && q.is_ridden && q.has_entity",
+      "animations": [
+        "q.look('head')",
+        "q.bedrock('miraidon', 'ride_ground_run')"
       ]
     },
-    "sleep": {
-      "poseTypes": [
-        "SLEEP"
-      ],
+	"surfacewater-float": {
+      "poseTypes": ["STAND", "FLOAT"],
+      "isTouchingWater": true,
+	  "condition": "q.is_ridden",
       "animations": [
-        "q.bedrock('miraidon', 'sleep')"
+        "q.look('head')",
+        "q.bedrock('miraidon', 'ride_swim_idle')"
+      ]
+    },
+	"surfacewater-swim": {
+      "poseTypes": ["WALK", "SWIM"],
+      "isTouchingWater": true,
+	  "condition": "q.is_ridden && !q.is_sprinting",
+      "animations": [
+        "q.look('head')",
+        "q.bedrock('miraidon', 'ride_swim_walk')"
+      ]
+    },
+	"surfacewater-swimrun": {
+      "poseTypes": ["WALK", "SWIM"],
+      "isTouchingWater": true,
+	  "condition": "q.is_ridden && q.is_sprinting",
+      "animations": [
+        "q.look('head')",
+        "q.bedrock('miraidon', 'ride_water_run')"
+      ]
+    },
+	"hover": {
+      "poseTypes": ["HOVER"],
+      "isBattle": false,
+      "animations": [
+        "q.bedrock('miraidon', 'ride_air_fly')"
+      ]
+    },
+	"fly": {
+      "poseTypes": ["FLY"],
+      "isBattle": false,
+      "animations": [
+        "q.bedrock('miraidon', 'ride_air_fly')"
       ]
     }
   }
