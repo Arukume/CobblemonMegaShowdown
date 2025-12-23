@@ -12,4 +12,4 @@
 - Implemented Koraidon/Miraidon
 - Fixed Scaling with Zygarde/Greninja particles
 - Updated Zygarde's Particles
-- New Mega Evolution Particles (commissioned by xiao)
+- New Mega Evolution Particles (commissioned by xiaoxiao5464)
