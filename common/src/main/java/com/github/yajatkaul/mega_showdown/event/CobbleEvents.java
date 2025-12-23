@@ -313,13 +313,13 @@ public class CobbleEvents {
 
         event.getBattle().getPlayers().forEach(serverPlayer -> {
             PlayerPartyStore playerPartyStore = Cobblemon.INSTANCE.getStorage().getParty(serverPlayer);
-            AspectUtils.revertPokemonsIfRequired(playerPartyStore);
+            AspectUtils.revertPokemonsIfRequiredBattleStart(playerPartyStore);
         });
     }
 
     private static void hookBattleStarted(BattleStartedEvent.Post event) {
         event.getBattle().getOnEndHandlers().add((battle -> {
-            battle.getPlayers().forEach(AspectUtils::revertPokemonsIfRequired);
+            battle.getPlayers().forEach(AspectUtils::revertPokemonsIfRequiredBattleEnd);
             return Unit.INSTANCE;
         }));
     }

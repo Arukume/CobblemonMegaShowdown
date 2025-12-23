@@ -15,6 +15,7 @@ import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.cobblemon.mod.common.pokemon.properties.UnaspectPropertyType;
 import com.github.yajatkaul.mega_showdown.codec.Effect;
 import com.github.yajatkaul.mega_showdown.gimmick.MaxGimmick;
+import com.github.yajatkaul.mega_showdown.gimmick.MegaGimmick;
 import com.github.yajatkaul.mega_showdown.tag.MegaShowdownTags;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -69,7 +70,7 @@ public class AspectUtils {
 
     public static final Set<UUID> battleDisconnecter = new HashSet<>();
 
-    public static void revertPokemonsIfRequired(ServerPlayer player) {
+    public static void revertPokemonsIfRequiredBattleEnd(ServerPlayer player) {
         if (player == null || battleDisconnecter.contains(player.getUUID())) {
             if (player != null) {
                 battleDisconnecter.remove(player.getUUID());
@@ -79,7 +80,7 @@ public class AspectUtils {
 
         PlayerPartyStore playerPartyStore = Cobblemon.INSTANCE.getStorage().getParty(player);
         for (Pokemon pokemon : playerPartyStore) {
-            AspectUtils.revertPokemonsIfRequired(pokemon);
+            AspectUtils.revertPokemonsIfRequired(pokemon, false);
 
             if (pokemon.getSpecies().getName().equals("Burmy")) {
                 Holder<Biome> biomeHolder = player.serverLevel().getBiome(player.blockPosition());
@@ -101,11 +102,24 @@ public class AspectUtils {
 
     public static void revertPokemonsIfRequired(PlayerPartyStore playerPartyStore) {
         for (Pokemon pokemon : playerPartyStore) {
-            AspectUtils.revertPokemonsIfRequired(pokemon);
+            AspectUtils.revertPokemonsIfRequired(pokemon, false);
         }
     }
 
-    public static void revertPokemonsIfRequired(Pokemon pokemon) {
+    public static void revertPokemonsIfRequiredBattleStart(PlayerPartyStore playerPartyStore) {
+        for (Pokemon pokemon : playerPartyStore) {
+            AspectUtils.revertPokemonsIfRequired(pokemon, true);
+        }
+    }
+
+    public static void revertPokemonsIfRequired(Pokemon pokemon, boolean battleStart) {
+        if (battleStart) {
+            if (pokemon.getPersistentData().getBoolean(MegaGimmick.IS_MEGA_TAG)) {
+                pokemon.getPersistentData().remove(MegaGimmick.IS_MEGA_TAG);
+                MegaGimmick.unmegaEvolve(pokemon);
+            }
+        }
+
         if (pokemon.getPersistentData().contains("battle_end_revert")) {
             List<EffectPair> aspects = AspectUtils.getRevertDataPokemon(
                     pokemon,
@@ -149,22 +163,22 @@ public class AspectUtils {
             pokemon.getAspects().stream().filter(a -> a.startsWith("msd:tera_")).forEach(name -> {
                 UnaspectPropertyType.INSTANCE.fromString("msd:tera_" + pokemon.getTeraType().showdownId()).apply(pokemon);
             });
-            pokemon.getPersistentData().putBoolean("is_tera", false);
+            pokemon.getPersistentData().remove("is_tera");
             if (pokemon.getEntity() != null) {
                 pokemon.getEntity().removeEffect(MobEffects.GLOWING);
             }
         }
 
         if (pokemon.getPersistentData().getBoolean("is_max")) {
-            pokemon.getPersistentData().putBoolean("is_max", false);
+            pokemon.getPersistentData().remove("is_max");
+            Effect.getEffect("mega_showdown:dynamax_end").applyEffects(pokemon, List.of("dynamax_form=none"), null);
             if (pokemon.getEntity() != null) {
-                Effect.getEffect("mega_showdown:dynamax_end").applyEffects(pokemon, List.of("dynamax_form=none"), null);
                 MaxGimmick.startGradualScalingDown(pokemon.getEntity());
             }
         }
 
         if (pokemon.getPersistentData().getBoolean("form_changing")) {
-            pokemon.getPersistentData().putBoolean("form_changing", false);
+            pokemon.getPersistentData().remove("form_changing");
         }
     }
 

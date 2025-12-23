@@ -28,9 +28,10 @@ public record MegaGimmick(
             Codec.list(Codec.STRING).fieldOf("pokemons").forGetter(MegaGimmick::pokemons),
             AspectSetCodec.CODEC.fieldOf("aspect").forGetter(MegaGimmick::aspect_conditions)
     ).apply(instance, MegaGimmick::new));
+    public static final String IS_MEGA_TAG = "is_mega";
 
     public static boolean isMega(Pokemon pokemon) {
-        return pokemon.getPersistentData().getBoolean("mega_evolved");
+        return pokemon.getPersistentData().getBoolean(IS_MEGA_TAG);
     }
 
     public static boolean hasMega(ServerPlayer player) {
@@ -42,13 +43,13 @@ public record MegaGimmick(
         PCStore pcStore = Cobblemon.INSTANCE.getStorage().getPC(player);
 
         for (Pokemon pokemon : playerPartyStore) {
-            if (pokemon.getPersistentData().getBoolean("mega_evolved")) {
+            if (pokemon.getPersistentData().getBoolean(IS_MEGA_TAG)) {
                 return true;
             }
         }
 
         for (Pokemon pokemon : pcStore) {
-            if (pokemon.getPersistentData().getBoolean("mega_evolved")) {
+            if (pokemon.getPersistentData().getBoolean(IS_MEGA_TAG)) {
                 return true;
             }
         }
@@ -87,49 +88,29 @@ public record MegaGimmick(
         if (!MegaShowdownConfig.outSideMega || pokemon == null || pokemon.getPersistentData().getBoolean("form_changing")) {
             return;
         }
-        if (pokemon.getPersistentData().getBoolean("mega_evolved")) {
+        if (pokemon.getPersistentData().getBoolean(IS_MEGA_TAG)) {
             unmegaEvolve(pokemon);
         } else {
             megaEvolve(pokemon);
         }
     }
 
-    private static void megaEvolve(Pokemon pokemon) {
+    public static void megaEvolve(Pokemon pokemon) {
         ItemStack heldItem = pokemon.heldItem();
         MegaGimmick megaGimmick = RegistryLocator.getComponent(MegaGimmick.class, heldItem);
 
         if (pokemon.getSpecies().getName().equals("Rayquaza")) {
-            AspectUtils.appendRevertDataPokemon(
-                    Effect.getEffect("mega_showdown:mega_evolution"),
-                    List.of("mega_evolution=none"),
-                    pokemon,
-                    "revert_aspects"
-            );
             Effect.getEffect("mega_showdown:mega_evolution").applyEffects(pokemon, List.of("mega_evolution=mega"), null);
         } else if (megaGimmick != null) {
-            AspectUtils.appendRevertDataPokemon(
-                    Effect.getEffect("mega_showdown:mega_evolution"),
-                    megaGimmick.aspect_conditions.revert_aspects(),
-                    pokemon,
-                    "revert_aspects"
-            );
             Effect.getEffect("mega_showdown:mega_evolution").applyEffects(pokemon, megaGimmick.aspect_conditions.apply_aspects(), null);
         }
-        pokemon.getPersistentData().putBoolean("mega_evolved", true);
+        pokemon.getPersistentData().putBoolean(IS_MEGA_TAG, true);
         pokemon.setTradeable(false);
     }
 
-    private static void unmegaEvolve(Pokemon pokemon) {
-        ItemStack heldItem = pokemon.heldItem();
-        MegaGimmick megaGimmick = RegistryLocator.getComponent(MegaGimmick.class, heldItem);
-
-        if (pokemon.getSpecies().getName().equals("Rayquaza")) {
-            pokemon.getPersistentData().remove("mega_evolved");
-            Effect.getEffect("mega_showdown:mega_evolution").revertEffects(pokemon, List.of("mega_evolution=none"), null);
-        } else if (megaGimmick != null) {
-            pokemon.getPersistentData().remove("mega_evolved");
-            Effect.getEffect("mega_showdown:mega_evolution").revertEffects(pokemon, megaGimmick.aspect_conditions.revert_aspects(), null);
-        }
+    public static void unmegaEvolve(Pokemon pokemon) {
+        pokemon.getPersistentData().remove(IS_MEGA_TAG);
+        Effect.getEffect("mega_showdown:mega_evolution").revertEffects(pokemon, List.of("mega_evolution=none"), null);
         pokemon.setTradeable(true);
     }
 
