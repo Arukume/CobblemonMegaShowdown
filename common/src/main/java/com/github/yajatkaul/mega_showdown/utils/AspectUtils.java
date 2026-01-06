@@ -162,14 +162,14 @@ public class AspectUtils {
 
         if (pokemon.getPersistentData().getBoolean("is_tera")) {
             pokemon.getAspects().stream().filter(a -> a.startsWith("msd:tera_")).forEach(name -> {
-                UnaspectPropertyType.INSTANCE.fromString("msd:tera_" + pokemon.getTeraType().showdownId()).apply(pokemon);
+                UnaspectPropertyType.INSTANCE.fromString(name).apply(pokemon);
             });
-            pokemon.getPersistentData().remove("is_tera");
             if (pokemon.getEntity() != null) {
                 if (MegaShowdownConfig.legacyTeraEffect) {
                     pokemon.getEntity().removeEffect(MobEffects.GLOWING);
                 }
             }
+            pokemon.getPersistentData().remove("is_tera");
         }
 
         if (pokemon.getPersistentData().getBoolean("is_max")) {

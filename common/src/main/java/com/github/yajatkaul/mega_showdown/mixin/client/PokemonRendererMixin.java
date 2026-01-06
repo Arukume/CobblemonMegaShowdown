@@ -71,9 +71,9 @@ public class PokemonRendererMixin {
             mega_showdown$renderTeraHats(aspect.get(), pokemon, clientDelegate, partialTicks, poseStack, buffer, packedLight);
         }
 
-//        dmax_aspect.ifPresent((daspect) -> {
-//            mega_showdown$renderDmaxClouds(pokemon, clientDelegate, partialTicks, poseStack, buffer, packedLight);
-//        });
+        dmax_aspect.ifPresent((daspect) -> {
+            mega_showdown$renderDmaxClouds(pokemon, clientDelegate, partialTicks, poseStack, buffer, packedLight);
+        });
     }
 
     @Unique
