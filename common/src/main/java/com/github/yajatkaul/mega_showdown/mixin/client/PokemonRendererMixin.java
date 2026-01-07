@@ -3,6 +3,7 @@ package com.github.yajatkaul.mega_showdown.mixin.client;
 import com.cobblemon.mod.common.client.entity.PokemonClientDelegate;
 import com.cobblemon.mod.common.client.render.MatrixWrapper;
 import com.cobblemon.mod.common.client.render.models.blockbench.PosableModel;
+import com.cobblemon.mod.common.client.render.models.blockbench.PosableState;
 import com.cobblemon.mod.common.client.render.models.blockbench.bedrock.animation.BedrockActiveAnimation;
 import com.cobblemon.mod.common.client.render.models.blockbench.bedrock.animation.BedrockAnimationRepository;
 import com.cobblemon.mod.common.client.render.models.blockbench.repository.RenderContext;
@@ -36,35 +37,59 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.*;
 
+/*
+IK this code is shit but im bored doing this so ill fix it later
+ */
 @Mixin(value = PokemonRenderer.class)
 public class PokemonRendererMixin {
     @Unique
     private final RenderContext mega_showdown$context = new RenderContext();
+
+    //TeraHats
     @Unique
     private final ResourceLocation mega_showdown$teraPoserId = ResourceLocation.fromNamespaceAndPath("cobblemon", "tera_hat");
     @Unique
     private final TeraHatState mega_showdown$teraHatState = new TeraHatState();
     @Unique
     private final Set<String> mega_showdown$teraAspects = new HashSet<>();
+    //Timershit
+    @Unique
+    private double mega_showdown$animTeraSeconds = 0.0;
+    @Unique
+    private long mega_showdown$lastTeraTimeNs = -1L;
+    //
 
+    //Dmax clouds
     @Unique
     private final ResourceLocation mega_showdown$dmaxPoserId = ResourceLocation.fromNamespaceAndPath("cobblemon", "dmax_clouds");
     @Unique
     public final DmaxHatState mega_showdown$dmaxHatState = new DmaxHatState();
     @Unique
     private final Set<String> mega_showdown$dmaxAspects = new HashSet<>();
+    //Timershit
+    @Unique
+    private double mega_showdown$animCloudsSeconds = 0.0;
+    @Unique
+    private long mega_showdown$lastCloudsTimeNs = -1L;
+    //
 
+    //Tera crystal
     @Unique
     private final ResourceLocation mega_showdown$teraCrystalPoserId = ResourceLocation.fromNamespaceAndPath("cobblemon", "terastal_transformation");
     @Unique
     public final TeraCrystalState mega_showdown$teraCrystalState = new TeraCrystalState();
     @Unique
     private final Set<String> mega_showdown$teraCrystalAspects = new HashSet<>();
-
     @Unique
     private boolean mega_showdown$teraCrystalPlayed = false;
     @Unique
     private boolean mega_showdown$teraCrystalPass = false;
+    //Timershit
+    @Unique
+    private double mega_showdown$animCrystalSeconds = 0.0;
+    @Unique
+    private long mega_showdown$lastCrystalTimeNs = -1L;
+    //
 
     @Inject(method = "<init>", at = @At(value = "RETURN"))
     public void init(EntityRendererProvider.Context context, CallbackInfo ci) {
@@ -72,9 +97,10 @@ public class PokemonRendererMixin {
         this.mega_showdown$context.put(RenderContext.Companion.getDO_QUIRKS(), true);
     }
 
-    @Inject(method = "render*", at = @At(value = "TAIL"), cancellable = true)
+    @Inject(method = "render*", at = @At(value = "TAIL"))
     public void render(PokemonEntity entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight, CallbackInfo ci) {
-        PokemonClientDelegate clientDelegate = (PokemonClientDelegate) entity.getDelegate();
+        PokemonClientDelegate clientDelegate =
+                (PokemonClientDelegate) entity.getDelegate();
 
         Pokemon pokemon = entity.getPokemon();
         boolean tera_play = pokemon.getAspects().contains("play_tera");
@@ -92,7 +118,6 @@ public class PokemonRendererMixin {
                     packedLight
             );
             if (!mega_showdown$teraCrystalPass) {
-                ci.cancel();
                 return;
             }
         }
@@ -119,6 +144,15 @@ public class PokemonRendererMixin {
 
     @Unique
     private void mega_showdown$renderTeraCrystals(PokemonEntity entity, Pokemon pokemon, PokemonClientDelegate clientDelegate, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+        long now = System.nanoTime();
+
+        if (mega_showdown$lastCloudsTimeNs != -1L) {
+            double deltaSeconds = (now - mega_showdown$lastCrystalTimeNs) / 1_000_000_000.0;
+            mega_showdown$animCrystalSeconds += deltaSeconds;
+        }
+
+        mega_showdown$lastCloudsTimeNs = now;
+
         float mega_showdown$teraCrystalDuration = new BedrockActiveAnimation(
                 BedrockAnimationRepository.INSTANCE.getAnimation("terastal_transformation", "animation.terastal_transformation.transform")
         ).getDuration();
@@ -126,6 +160,8 @@ public class PokemonRendererMixin {
         if (mega_showdown$teraCrystalState.getAnimationSeconds() >= mega_showdown$teraCrystalDuration) {
             mega_showdown$teraCrystalPlayed = true;
             mega_showdown$teraCrystalPass = false;
+            mega_showdown$animCrystalSeconds = 0.0;
+            mega_showdown$lastCrystalTimeNs = -1L;
             mega_showdown$teraCrystalState.resetAnimation();
             entity.after(3f, () -> {
                 mega_showdown$teraCrystalPlayed = false;
@@ -136,8 +172,15 @@ public class PokemonRendererMixin {
             mega_showdown$teraCrystalPass = true;
         }
 
+        float ticks = (float) (mega_showdown$animCrystalSeconds * 20f);
+
+        int age = (int) ticks;
+        float pt = ticks - age;
+
+        mega_showdown$teraCrystalState.updateAge(age);
+        mega_showdown$teraCrystalState.setPartialTicks(pt);
+
         mega_showdown$teraCrystalState.setCurrentAspects(mega_showdown$teraCrystalAspects);
-        mega_showdown$teraCrystalState.updatePartialTicks(partialTicks);
 
         Map<String, MatrixWrapper> locatorStates = clientDelegate.getLocatorStates();
         MatrixWrapper rootLocator = locatorStates.get("root");
@@ -179,8 +222,12 @@ public class PokemonRendererMixin {
         model.applyAnimations(
                 null,
                 mega_showdown$teraCrystalState,
-                0F, 0F, 0F, 0F,
-                mega_showdown$teraCrystalState.getAnimationSeconds() * 20
+                0F,
+                0F,
+                ticks,
+                0F,
+                0F
+
         );
 
         // Render
@@ -242,8 +289,10 @@ public class PokemonRendererMixin {
         model.applyAnimations(
                 null,
                 mega_showdown$dmaxHatState,
-                0F, 0F, 0F, 0F,
-                mega_showdown$dmaxHatState.getAnimationSeconds() * 20
+                0F, 0F,
+                mega_showdown$dmaxHatState.getAnimationSeconds() * 20,
+                0F,
+                0F
         );
 
         // Render
@@ -310,9 +359,9 @@ public class PokemonRendererMixin {
                 mega_showdown$teraHatState,
                 0F,
                 0F,
+                mega_showdown$teraHatState.getAnimationSeconds() * 20,
                 0F,
-                0F,
-                mega_showdown$teraHatState.getAnimationSeconds() * 20
+                0F
         );
 
         // Render

@@ -42,6 +42,7 @@ public class LivingEntityRendererMixin<T extends LivingEntity, M extends EntityM
         if (!(entity instanceof PokemonEntity pokemon)) {
             return originalCall.call(buffer, original);
         }
+        if (pokemon.getPokemon().getSpecies().getName().equals("Terapagos")) return originalCall.call(buffer, original);
 
         Optional<String> aspect = pokemon.getAspects().stream()
                 .filter(a -> a.startsWith("msd:tera_")).findFirst();

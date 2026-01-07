@@ -296,6 +296,8 @@ public class CobbleEvents {
         PokemonEntity pokemonEntity = event.getPokemon().getEffectedPokemon().getEntity();
         Pokemon pokemon = pokemonEntity.getPokemon();
 
+        Effect.getEffect("mega_showdown:tera_init").applyEffectsBattle(pokemon, List.of(), null, event.getPokemon());
+
         AspectPropertyType.INSTANCE.fromString("msd:tera_" + pokemon.getTeraType().showdownId()).apply(pokemon);
         AdvancementHelper.grantAdvancement(pokemon.getOwnerPlayer(), "tera/terastallized");
 
