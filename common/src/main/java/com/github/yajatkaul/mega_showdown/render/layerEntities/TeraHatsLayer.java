@@ -49,7 +49,6 @@ public class TeraHatsLayer extends LayerEntity {
         poseStack.mulPose(headLocator.getMatrix());
         poseStack.mulPose(Axis.XP.rotationDegrees(180));
         poseStack.mulPose(Axis.YP.rotationDegrees(180));
-        poseStack.translate(0.08, 0.0, 0.0);
 
         if (teraHatCodec != null) {
             List<Float> scale = LayerCodec.getScaleForHat(pokemon, aspect, teraHatCodec);
