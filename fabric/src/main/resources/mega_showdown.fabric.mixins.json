@@ -9,7 +9,8 @@
   ],
   "mixins": [
     "CobblemonDataProviderMixin",
-    "CobblemonInitialiserMixin"
+    "CobblemonInitialiserMixin",
+    "PokemonClientDelegateMixin"
   ],
   "injectors": {
     "defaultRequire": 1

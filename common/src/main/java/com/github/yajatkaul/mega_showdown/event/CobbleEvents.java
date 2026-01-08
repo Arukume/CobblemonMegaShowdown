@@ -319,14 +319,6 @@ public class CobbleEvents {
         }
 
         event.getBattle().dispatchWaitingToFront(3.5f, () -> Unit.INSTANCE);
-
-        Effect.getEffect("mega_showdown:tera_" + pokemon.getTeraType().showdownId().toLowerCase(Locale.ROOT)).applyEffectsBattleLoop(pokemon, List.of(), null, event.getPokemon());
-        AspectUtils.appendRevertDataPokemon(
-                Effect.getEffect("mega_showdown:tera_" + pokemon.getTeraType().showdownId().toLowerCase(Locale.ROOT)),
-                List.of(),
-                pokemon,
-                "battle_end_revert"
-        );
     }
 
     private static void hookBattlePre(BattleStartedEvent.Pre event) {
