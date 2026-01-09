@@ -30,7 +30,6 @@ public record MaxGimmick(
 
         GlowHandler.applyDynamaxGlow(entity.getEntity());
 
-        entity.getPersistentData().putFloat("orignal_size", entity.getScaleModifier());
         float startScale = entity.getScaleModifier();
         ScalingData scalingData = new ScalingData(startScale, targetScale, DEFAULT_SCALING_DURATION);
 
@@ -43,7 +42,7 @@ public record MaxGimmick(
         pokemon.getEntity().removeEffect(MobEffects.GLOWING);
 
         float startScale = pokemon.getScaleModifier();
-        ScalingData scalingData = new ScalingData(startScale, pokemon.getPersistentData().getFloat("orignal_size"), DEFAULT_SCALING_DURATION);
+        ScalingData scalingData = new ScalingData(startScale, 1, DEFAULT_SCALING_DURATION);
 
         ACTIVE_SCALING_ANIMATIONS.put(pokemon, scalingData);
     }
@@ -61,7 +60,7 @@ public record MaxGimmick(
 
             if (entity.getEntity() == null) {
                 iterator.remove();
-                entity.setScaleModifier(entity.getForm().getBaseScale());
+                entity.setScaleModifier(1);
                 continue;
             }
 

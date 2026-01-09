@@ -5,3 +5,4 @@
 - Fixed Tera's being able to dynamax
 - Max mushroom's spawning is more rare now
 - Fixed tera/stellar drop rate to 0 causing soft locks
+- Fixed dmax reversion size shrinking
