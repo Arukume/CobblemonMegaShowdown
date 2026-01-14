@@ -22,7 +22,6 @@ import java.util.Optional;
 
 @Mixin(value = LivingEntityRenderer.class)
 public class LivingEntityRendererMixin<T extends LivingEntity, M extends EntityModel<T>> {
-
     @WrapOperation(
             method = "render*",
             at = @At(

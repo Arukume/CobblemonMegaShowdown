@@ -295,7 +295,10 @@ public class CobbleEvents {
 
         Effect.getEffect("mega_showdown:tera_init_" + pokemon.getTeraType().showdownId().toLowerCase(Locale.ROOT)).applyEffectsBattle(pokemon, List.of(), null, event.getPokemon());
 
-        AspectPropertyType.INSTANCE.fromString("msd:tera_" + pokemon.getTeraType().showdownId()).apply(pokemon);
+        pokemonEntity.after(1.5f, () -> {
+            AspectPropertyType.INSTANCE.fromString("msd:tera_" + pokemon.getTeraType().showdownId()).apply(pokemon);
+            return Unit.INSTANCE;
+        });
         AdvancementHelper.grantAdvancement(pokemon.getOwnerPlayer(), "tera/terastallized");
 
         AspectPropertyType.INSTANCE.fromString("play_tera").apply(pokemon);
