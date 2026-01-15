@@ -116,7 +116,7 @@
   "block.mega_showdown.mega_stone_crystal": "メガクリスタル",
   "block.mega_showdown.keystone_ore": "キーストーン鉱石",
   "block.mega_showdown.keystone_block": "キーストーンブロック",
-   "item.mega_showdown.keystone": "キーストーン",
+  "item.mega_showdown.keystone": "キーストーン",
   "tooltip.mega_showdown.keystone.tooltip": "§7メガバングルの作成に使われる",
   "item.mega_showdown.mega_bracelet": "メガバングル",
   "tooltip.mega_showdown.mega_bracelet.tooltip": "§7キーストーンを内蔵し、メガストーンを持ったポケモンをメガシンカさせる",
