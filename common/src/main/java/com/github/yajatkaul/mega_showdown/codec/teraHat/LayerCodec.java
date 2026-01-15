@@ -1,8 +1,11 @@
 package com.github.yajatkaul.mega_showdown.codec.teraHat;
 
 import com.cobblemon.mod.common.pokemon.Pokemon;
+import com.github.yajatkaul.mega_showdown.MegaShowdown;
+import com.github.yajatkaul.mega_showdown.render.LayerDataLoader;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.List;
 import java.util.Map;
@@ -24,5 +27,10 @@ public record LayerCodec(
             return hatConfigs.getOrDefault(tera_hat, DEFAULT_SCALE);
         }
         return teraHatCodec.hat_config.getOrDefault(tera_hat, DEFAULT_SCALE);
+    }
+
+    public static LayerCodec getLayerCodec(String name) {
+        name = name.toLowerCase().replace(" ", "");
+        return LayerDataLoader.REGISTRY.get(ResourceLocation.fromNamespaceAndPath(MegaShowdown.MOD_ID, "msd_sizer/" + name + ".json"));
     }
 }

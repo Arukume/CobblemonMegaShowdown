@@ -40,7 +40,7 @@ public class DynamaxCloudsLayer extends LayerEntity {
 
         if (headLocator == null) return;
 
-        LayerCodec dynamaxCloudCodec = LayerDataLoader.REGISTRY.get(ResourceLocation.fromNamespaceAndPath(MegaShowdown.MOD_ID, "msd_sizer/" + pokemon.getSpecies().getName().toLowerCase(Locale.ROOT) + ".json"));
+        LayerCodec dynamaxCloudCodec = LayerCodec.getLayerCodec(pokemon.getSpecies().getName());
 
         // Get model and texture
         PosableModel model = VaryingModelRepository.INSTANCE.getPoser(poserId, state);
