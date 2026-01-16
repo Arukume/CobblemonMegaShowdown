@@ -1,6 +1,7 @@
 # TODO
 - Dynamax first get in pokeball then throw
-
+- fix shader names
+- 
 # Future
 - Make custom weather datapackable
 - Datapackable logic like Burmy and Keldeo
