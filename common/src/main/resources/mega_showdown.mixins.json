@@ -14,6 +14,7 @@
     "client.ui.PCGUIMixin",
     "client.ui.SummaryCompanionMixin",
     "client.ui.SummaryMixin",
+    "client.ui.TypeWidgetMixin",
     "minecraft.ItemInHandRendererMixin"
   ],
   "mixins": [
@@ -35,6 +36,7 @@
     "battle.ShowdownInterpreterMixin",
     "battle.ShowdownSpeciesMixin",
     "battle.StartInstructionMixin",
+    "client.ui.TypeIconMixin",
     "minecraft.ItemStackMixin",
     "packet.MovePartyPokemonToPCHandlerMixin"
   ],

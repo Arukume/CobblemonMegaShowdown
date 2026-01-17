@@ -1,4 +1,4 @@
-package com.github.yajatkaul.mega_showdown.fabric.datapack;
+package com.github.yajatkaul.mega_showdown.neoforge.datapack;
 
 import com.cobblemon.mod.common.Cobblemon;
 import com.cobblemon.mod.common.api.data.JsonDataRegistry;
@@ -6,12 +6,12 @@ import com.cobblemon.mod.common.api.reactive.SimpleObservable;
 import com.cobblemon.mod.common.api.types.ElementalType;
 import com.cobblemon.mod.common.api.types.ElementalTypes;
 import com.cobblemon.mod.common.api.types.tera.TeraType;
-import com.cobblemon.mod.common.api.types.tera.TeraTypes;
 import com.cobblemon.mod.common.api.types.tera.elemental.ElementalTypeTeraType;
 import com.cobblemon.mod.common.battles.runner.graal.GraalShowdownService;
 import com.cobblemon.mod.common.util.MiscUtilsKt;
 import com.cobblemon.mod.relocations.graalvm.polyglot.Value;
 import com.github.yajatkaul.mega_showdown.MegaShowdown;
+import com.github.yajatkaul.mega_showdown.datapack.CustomTypeRegistry;
 import com.github.yajatkaul.mega_showdown.mixin.TeraTypesAccessor;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -23,17 +23,14 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.PackType;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
-public class CustomTypeRegistry implements JsonDataRegistry<CustomTypeRegistry.CustomTypeData> {
-    public static final CustomTypeRegistry INSTANCE = new CustomTypeRegistry();
+public class CustomTypeRegistryNeo implements JsonDataRegistry<CustomTypeRegistryNeo.CustomTypeData> {
+    public static final CustomTypeRegistryNeo INSTANCE = new CustomTypeRegistryNeo();
 
-    public final List<ElementalType> customTypes = new ArrayList<>();
-    private final SimpleObservable<CustomTypeRegistry> observable = new SimpleObservable<>();
+    private final SimpleObservable<CustomTypeRegistryNeo> observable = new SimpleObservable<>();
 
-    private CustomTypeRegistry() {}
+    private CustomTypeRegistryNeo() {}
 
     @Override
     public @NotNull ResourceLocation getId() {
@@ -64,7 +61,7 @@ public class CustomTypeRegistry implements JsonDataRegistry<CustomTypeRegistry.C
     }
 
     @Override
-    public @NotNull SimpleObservable<CustomTypeRegistry> getObservable() {
+    public @NotNull SimpleObservable<CustomTypeRegistryNeo> getObservable() {
         return observable;
     }
 
@@ -75,7 +72,7 @@ public class CustomTypeRegistry implements JsonDataRegistry<CustomTypeRegistry.C
 
     @Override
     public void reload(@NotNull Map<ResourceLocation, ? extends CustomTypeData> data) {
-        customTypes.clear();
+        CustomTypeRegistry.customTypes.clear();
 
         data.forEach((identifier, typeData) -> {
             try {
@@ -88,7 +85,7 @@ public class CustomTypeRegistry implements JsonDataRegistry<CustomTypeRegistry.C
                         typeData.id
                 ));
 
-                customTypes.add(newType);
+                CustomTypeRegistry.customTypes.put(newType.getShowdownId(), newType);
 
                 // Create and register TeraType
                 TeraType newTeraType = new ElementalTypeTeraType(newType);
@@ -107,7 +104,7 @@ public class CustomTypeRegistry implements JsonDataRegistry<CustomTypeRegistry.C
             }
         });
 
-        Cobblemon.LOGGER.info("Loaded {} custom elemental types", customTypes.size());
+        Cobblemon.LOGGER.info("Loaded {} custom elemental types", CustomTypeRegistry.customTypes.size());
         observable.emit(this);
     }
 

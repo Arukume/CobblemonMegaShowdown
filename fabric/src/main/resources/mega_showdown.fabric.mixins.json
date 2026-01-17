@@ -5,8 +5,7 @@
   "minVersion": "0.8",
   "client": [
     "GameRendererMixin",
-    "ShaderInstanceMixin",
-    "TypeIconMixin"
+    "ShaderInstanceMixin"
   ],
   "mixins": [
     "CobblemonDataProviderMixin",

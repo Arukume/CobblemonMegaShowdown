@@ -106,15 +106,16 @@
       "texture": "cobblemon:textures/tera_hat/stellar_tera_hat.png",
       "layers": [
         {
-          "name": "glow",
-          "texture": "cobblemon:textures/tera_hat/stellar_tera_hat.png",
-          "emissive": true
-        },
-        {
           "name": "emissive",
           "emissive": true,
           "texture": "cobblemon:textures/tera_hat/stellar_tera_hat.png",
           "translucent": false
+        },
+        {
+          "name": "translucent",
+          "texture": "cobblemon:textures/tera_hat/stellar_crystals.png",
+          "translucent": true,
+          "emissive": true
         }
       ]
     }
