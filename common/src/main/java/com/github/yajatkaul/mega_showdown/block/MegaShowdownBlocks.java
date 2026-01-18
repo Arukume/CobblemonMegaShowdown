@@ -182,7 +182,8 @@ public class MegaShowdownBlocks {
                         .mapColor(MapColor.COLOR_PURPLE)
                         .requiresCorrectToolForDrops()
                         .sound(SoundType.STONE),
-                ResourceLocation.fromNamespaceAndPath(MegaShowdown.MOD_ID, name)
+                ResourceLocation.fromNamespaceAndPath(MegaShowdown.MOD_ID, name),
+                false
         ));
 
         MegaShowdownItems.ITEMS.register(name,

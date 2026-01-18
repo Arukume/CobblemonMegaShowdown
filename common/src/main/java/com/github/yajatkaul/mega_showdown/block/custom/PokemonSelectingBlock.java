@@ -1,6 +1,9 @@
 package com.github.yajatkaul.mega_showdown.block.custom;
 
+import com.cobblemon.mod.common.Cobblemon;
+import com.cobblemon.mod.common.api.battles.model.PokemonBattle;
 import com.cobblemon.mod.common.api.callback.PartySelectCallbacks;
+import com.cobblemon.mod.common.battles.BattleRegistry;
 import com.cobblemon.mod.common.util.PlayerExtensionsKt;
 import com.github.yajatkaul.mega_showdown.item.custom.PokemonSelectingBlockItem;
 import com.github.yajatkaul.mega_showdown.item.custom.PokemonSelectingItem;
@@ -22,14 +25,24 @@ import java.util.Objects;
 
 public class PokemonSelectingBlock extends Block {
     private final ResourceLocation id;
-    public PokemonSelectingBlock(Properties properties, ResourceLocation id) {
+    private final boolean canUseInBattle;
+    public PokemonSelectingBlock(Properties properties, ResourceLocation id, boolean canUseInBattle) {
         super(properties);
         this.id = id;
+        this.canUseInBattle = canUseInBattle;
     }
 
     @Override
     protected @NotNull InteractionResult useWithoutItem(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult blockHitResult) {
+        if (player.level().isClientSide) {
+            return InteractionResult.SUCCESS;
+        }
+
         Item item = BuiltInRegistries.ITEM.get(this.id);
+        PokemonBattle battle = BattleRegistry.getBattleByParticipatingPlayer((ServerPlayer) player);
+
+        if (!canUseInBattle && battle != null) return InteractionResult.FAIL;
+
         if (item instanceof PokemonSelectingBlockItem pokemonSelectingItem) {
             if (player instanceof ServerPlayer serverPlayer) {
                 PartySelectCallbacks.INSTANCE.createFromPokemon(

@@ -1,6 +1,7 @@
 package com.github.yajatkaul.mega_showdown.fabric.mixin;
 
 import com.cobblemon.mod.common.data.CobblemonDataProvider;
+import com.github.yajatkaul.mega_showdown.datapack.CustomTypeStatusRegistry;
 import com.github.yajatkaul.mega_showdown.fabric.datapack.CustomTypeRegistryFabric;
 import com.github.yajatkaul.mega_showdown.fabric.datapack.showdown.*;
 import com.github.yajatkaul.mega_showdown.gimmick.TeraGimmick;
@@ -17,6 +18,7 @@ public class CobblemonDataProviderMixin {
         CobblemonDataProvider self = (CobblemonDataProvider) (Object) this;
 
         self.register(CustomTypeRegistryFabric.INSTANCE, true);
+        self.register(CustomTypeStatusRegistry.INSTANCE, true);
         self.register(Moves.INSTANCE, true);
         self.register(Abilities.INSTANCE, true);
         self.register(Conditions.INSTANCE, true);
