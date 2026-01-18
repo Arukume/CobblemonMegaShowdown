@@ -68,32 +68,33 @@ public class CustomTypeStatusRegistry implements JsonDataRegistry<CustomTypeStat
     public void reload(@NotNull Map<ResourceLocation, ? extends CustomStatusData> data) {
         data.forEach((identifier, typeData) -> {
             try {
-                if (typeData instanceof CustomDamageStatusData customDamageStatusData) {
-                    DamageStatus status = new DamageStatus(
-                            MiscUtilsKt.cobblemonResource(customDamageStatusData.name),
-                            customDamageStatusData.showdownId,
-                            customDamageStatusData.applyMsg,
-                            customDamageStatusData.removeMsg,
-                            new IntRange(customDamageStatusData.minDur, customDamageStatusData.maxDur),
-                            customDamageStatusData.chance,
-                            customDamageStatusData.damagePercent,
-                            customDamageStatusData.healingAbility
+
+                if (typeData.damageStatusData() != null) {
+                    DamageStatus damageStatus = new DamageStatus(
+                            MiscUtilsKt.cobblemonResource(typeData.name()),
+                            typeData.showdownId(),
+                            typeData.applyMsg(),
+                            typeData.removeMsg(),
+                            new IntRange(typeData.minDur(), typeData.maxDur()),
+                            typeData.damageStatusData().chance(),
+                            typeData.damageStatusData().damagePercent(),
+                            typeData.damageStatusData().healingAbility()
                     );
 
-                    Statuses.registerStatus(status);
+                    Statuses.registerStatus(damageStatus);
                 } else {
                     PersistentStatus status = new PersistentStatus(
-                            MiscUtilsKt.cobblemonResource(typeData.name),
-                            typeData.showdownId,
-                            typeData.applyMsg,
-                            typeData.removeMsg,
-                            new IntRange(typeData.minDur, typeData.maxDur)
+                            MiscUtilsKt.cobblemonResource(typeData.name()),
+                            typeData.showdownId(),
+                            typeData.applyMsg(),
+                            typeData.removeMsg(),
+                            new IntRange(typeData.minDur(), typeData.maxDur())
                     );
 
                     Statuses.registerStatus(status);
                 }
 
-//                Cobblemon.LOGGER.info("Loaded custom type: {} ({})", identifier, typeData.name);
+//                Cobblemon.LOGGER.info("Loaded custom statuses: {} ({})", identifier, typeData.name);
             } catch (Exception e) {
                 Cobblemon.LOGGER.error("Error loading custom statuses {}: {}", identifier, e.getMessage());
             }
@@ -103,43 +104,7 @@ public class CustomTypeStatusRegistry implements JsonDataRegistry<CustomTypeStat
         observable.emit(this);
     }
 
-    public static class CustomStatusData {
-        public final String name;
-        public final String showdownId;
-        public final String applyMsg;
-        public final String removeMsg;
-        public final int minDur;
-        public final int maxDur;
-
-        public CustomStatusData(String name, String showdownId, String applyMsg, String removeMsg, int minDur, int maxDur) {
-            this.name = name;
-            this.showdownId = showdownId;
-            this.applyMsg = applyMsg;
-            this.removeMsg = removeMsg;
-            this.minDur = minDur;
-            this.maxDur = maxDur;
-        }
-    }
-
-    public static class CustomDamageStatusData extends CustomStatusData {
-        private final int chance;
-        private final double damagePercent;
-        private final String healingAbility;
-
-        public CustomDamageStatusData(String name,
-                                      String showdownId,
-                                      String applyMsg,
-                                      String removeMsg,
-                                      int minDur,
-                                      int maxDur,
-                                      int chance,
-                                      double damagePercent,
-                                      String healingAbility
-                                      ) {
-            super(name, showdownId, applyMsg, removeMsg, minDur, maxDur);
-            this.chance = chance;
-            this.healingAbility = healingAbility;
-            this.damagePercent = damagePercent;
-        }
-    }
+    public record CustomStatusData(String name, String showdownId, String applyMsg, String removeMsg, int minDur,
+                                   int maxDur, DamageStatusData damageStatusData) {}
+    public record DamageStatusData(int chance, double damagePercent, String healingAbility) {}
 }
