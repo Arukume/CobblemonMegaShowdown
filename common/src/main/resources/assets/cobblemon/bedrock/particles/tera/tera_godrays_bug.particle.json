@@ -2,7 +2,7 @@
 	"format_version": "1.10.0",
 	"particle_effect": {
 		"description": {
-			"identifier": "cobblemon:tera_godrays_fire",
+			"identifier": "cobblemon:tera_godrays_bug",
 			"basic_render_parameters": {
 				"material": "particles_blend",
 				"texture": "textures/particles/generic/lightbeam"
