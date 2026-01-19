@@ -3,6 +3,7 @@ package com.github.yajatkaul.mega_showdown.neoforge;
 import com.github.yajatkaul.mega_showdown.MegaShowdown;
 import com.github.yajatkaul.mega_showdown.MegaShowdownClient;
 import com.github.yajatkaul.mega_showdown.block.MegaShowdownBlockEntities;
+import com.github.yajatkaul.mega_showdown.block.block_entity.renderer.MegaStoneStandRenderer;
 import com.github.yajatkaul.mega_showdown.block.block_entity.renderer.PedestalBlockEntityRenderer;
 import com.github.yajatkaul.mega_showdown.render.LayerDataLoader;
 import com.github.yajatkaul.mega_showdown.render.ItemRenderingLoader;
@@ -163,6 +164,7 @@ public class MegaShowdownNeoForgeClient {
     @SubscribeEvent
     public static void registerBER(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(MegaShowdownBlockEntities.PEDESTAL_BLOCK_ENTITY.get(), PedestalBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(MegaShowdownBlockEntities.MEGA_STONE_STAND_BLOCK_ENTITY.get(), MegaStoneStandRenderer::new);
     }
 
     @SubscribeEvent
