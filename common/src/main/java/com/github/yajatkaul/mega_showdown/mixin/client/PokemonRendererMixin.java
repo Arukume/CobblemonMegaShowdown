@@ -10,8 +10,10 @@ import com.cobblemon.mod.common.client.render.models.blockbench.repository.Varyi
 import com.cobblemon.mod.common.client.render.pokemon.PokemonRenderer;
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
 import com.cobblemon.mod.common.pokemon.Pokemon;
+import com.github.yajatkaul.mega_showdown.MegaShowdown;
 import com.github.yajatkaul.mega_showdown.codec.sizer.LayerCodec;
 import com.github.yajatkaul.mega_showdown.config.MegaShowdownConfig;
+import com.github.yajatkaul.mega_showdown.render.LayerDataLoader;
 import com.github.yajatkaul.mega_showdown.render.layerEntities.DynamaxCloudsLayer;
 import com.github.yajatkaul.mega_showdown.render.layerEntities.TeraHatsLayer;
 import com.github.yajatkaul.mega_showdown.render.layerEntities.states.TeraCrystalState;
@@ -153,8 +155,6 @@ public class PokemonRendererMixin {
 
         if (rootLocator == null) return;
 
-        LayerCodec crystalSize = LayerCodec.getLayerCodec(pokemon.getSpecies().getName());
-
         // Get model and texture
         PosableModel model = VaryingModelRepository.INSTANCE.getPoser(mega_showdown$teraCrystalPoserId, mega_showdown$teraCrystalState);
         model.context = mega_showdown$context;
@@ -170,6 +170,8 @@ public class PokemonRendererMixin {
         mega_showdown$context.put(RenderContext.Companion.getSPECIES(), mega_showdown$teraCrystalPoserId);
         mega_showdown$context.put(RenderContext.Companion.getPOSABLE_STATE(), mega_showdown$teraCrystalState);
 
+        LayerCodec.Settings settings = LayerDataLoader.getSettings(pokemon,"msd:tera_crystal");
+
         poseStack.pushPose();
 
         poseStack.mulPose(rootLocator.getMatrix());
@@ -177,10 +179,15 @@ public class PokemonRendererMixin {
         poseStack.mulPose(Axis.YP.rotationDegrees(180));
         poseStack.translate(0.08, 0.0, 0.0);
 
+        if (settings != null) {
+            List<Float> translate = settings.translate();
+            poseStack.translate(translate.get(0), translate.get(1), translate.get(2));
+        }
+
         poseStack.scale(1.5f, 1.5f, 1.5f);
 
-        if (crystalSize != null) {
-            List<Float> scale = LayerCodec.getScaleForHat(pokemon, "msd:tera_crystal", crystalSize);
+        if (settings != null) {
+            List<Float> scale = settings.scale();
             poseStack.scale(scale.get(0), scale.get(1), scale.get(2));
         }
 

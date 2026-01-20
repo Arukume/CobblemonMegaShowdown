@@ -8,6 +8,7 @@ import com.cobblemon.mod.common.client.render.models.blockbench.repository.Varyi
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.github.yajatkaul.mega_showdown.codec.sizer.LayerCodec;
+import com.github.yajatkaul.mega_showdown.render.LayerDataLoader;
 import com.github.yajatkaul.mega_showdown.render.layerEntities.states.DmaxHatState;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -41,8 +42,6 @@ public class DynamaxCloudsLayer extends LayerEntity {
 
         if (headLocator == null) return;
 
-        LayerCodec dynamaxCloudCodec = LayerCodec.getLayerCodec(pokemon.getSpecies().getName());
-
         // Get model and texture
         PosableModel model = VaryingModelRepository.INSTANCE.getPoser(poserId, state);
         model.context = context;
@@ -58,15 +57,23 @@ public class DynamaxCloudsLayer extends LayerEntity {
         context.put(RenderContext.Companion.getSPECIES(), poserId);
         context.put(RenderContext.Companion.getPOSABLE_STATE(), state);
 
+        LayerCodec.Settings settings = LayerDataLoader.getSettings(pokemon,"msd:dmax");
+
         poseStack.pushPose();
 
         poseStack.mulPose(headLocator.getMatrix());
         poseStack.mulPose(Axis.XP.rotationDegrees(180));
         poseStack.mulPose(Axis.YP.rotationDegrees(180));
+
         poseStack.translate(0.08, 0.0, 0.0);
 
-        if (dynamaxCloudCodec != null) {
-            List<Float> scale = LayerCodec.getScaleForHat(pokemon, "msd:dmax", dynamaxCloudCodec);
+        if (settings != null) {
+            List<Float> translate = settings.translate();
+            poseStack.translate(translate.get(0), translate.get(1), translate.get(2));
+        }
+
+        if (settings != null) {
+            List<Float> scale = settings.scale();
             poseStack.scale(scale.get(0), scale.get(1), scale.get(2));
         }
 

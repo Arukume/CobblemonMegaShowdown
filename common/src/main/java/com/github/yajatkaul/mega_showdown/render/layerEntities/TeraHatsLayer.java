@@ -9,6 +9,7 @@ import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.github.yajatkaul.mega_showdown.codec.sizer.LayerCodec;
 import com.github.yajatkaul.mega_showdown.config.MegaShowdownConfig;
+import com.github.yajatkaul.mega_showdown.render.LayerDataLoader;
 import com.github.yajatkaul.mega_showdown.render.layerEntities.states.TeraHatState;
 import com.github.yajatkaul.mega_showdown.render.renderTypes.MSDRenderTypes;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -56,16 +57,21 @@ public class TeraHatsLayer extends LayerEntity {
         context.put(RenderContext.Companion.getSPECIES(), poserId);
         context.put(RenderContext.Companion.getPOSABLE_STATE(), state);
 
-        poseStack.pushPose();
+        LayerCodec.Settings settings = LayerDataLoader.getSettings(pokemon,aspect);
 
-        LayerCodec teraHatCodec = LayerCodec.getLayerCodec(pokemon.getSpecies().getName());
+        poseStack.pushPose();
 
         poseStack.mulPose(headLocator.getMatrix());
         poseStack.mulPose(Axis.XP.rotationDegrees(180));
         poseStack.mulPose(Axis.YP.rotationDegrees(180));
 
-        if (teraHatCodec != null) {
-            List<Float> scale = LayerCodec.getScaleForHat(pokemon, aspect, teraHatCodec);
+        if (settings != null) {
+            List<Float> translate = settings.translate();
+            poseStack.translate(translate.get(0), translate.get(1), translate.get(2));
+        }
+
+        if (settings != null) {
+            List<Float> scale = settings.scale();
             poseStack.scale(scale.get(0), scale.get(1), scale.get(2));
         }
 
