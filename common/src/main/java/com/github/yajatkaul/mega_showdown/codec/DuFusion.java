@@ -6,7 +6,6 @@ import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.github.yajatkaul.mega_showdown.components.MegaShowdownDataComponents;
 import com.github.yajatkaul.mega_showdown.components.PokemonStorge;
-import com.github.yajatkaul.mega_showdown.gimmick.codec.AspectConditions;
 import com.github.yajatkaul.mega_showdown.utils.PlayerUtils;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

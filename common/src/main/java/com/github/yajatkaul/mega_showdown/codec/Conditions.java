@@ -1,4 +1,4 @@
-package com.github.yajatkaul.mega_showdown.gimmick.codec;
+package com.github.yajatkaul.mega_showdown.codec;
 
 import com.cobblemon.mod.common.api.moves.Move;
 import com.cobblemon.mod.common.pokemon.Pokemon;
@@ -155,6 +155,7 @@ public record Conditions(
         if (!form.validate(pokemon)) return false;
         if (!aspect.validate(pokemon)) return false;
         if (!moves.validate(pokemon)) return false;
+        if (!friendship.validate(pokemon)) return false;
 
         return ability.validate(pokemon);
     }

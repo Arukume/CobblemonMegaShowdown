@@ -1,7 +1,6 @@
 package com.github.yajatkaul.mega_showdown.codec;
 
 import com.cobblemon.mod.common.pokemon.Pokemon;
-import com.github.yajatkaul.mega_showdown.gimmick.codec.AspectConditions;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.resources.ResourceLocation;
@@ -19,7 +18,7 @@ public record HeldItemFormChange(
             Codec.STRING.listOf().fieldOf("pokemons").forGetter(HeldItemFormChange::pokemons),
             AspectConditions.CODEC.fieldOf("aspect_conditions").forGetter(HeldItemFormChange::aspect_conditions),
             ResourceLocation.CODEC.optionalFieldOf("effect").forGetter(HeldItemFormChange::effect),
-            Codec.BOOL.fieldOf("tradable").forGetter(HeldItemFormChange::tradable)
+            Codec.BOOL.optionalFieldOf("tradable", true).forGetter(HeldItemFormChange::tradable)
     ).apply(instance, HeldItemFormChange::new));
 
     public void apply(Pokemon pokemon) {

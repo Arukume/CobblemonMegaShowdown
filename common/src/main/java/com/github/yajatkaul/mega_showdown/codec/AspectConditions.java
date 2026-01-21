@@ -1,4 +1,4 @@
-package com.github.yajatkaul.mega_showdown.gimmick.codec;
+package com.github.yajatkaul.mega_showdown.codec;
 
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.mojang.serialization.Codec;

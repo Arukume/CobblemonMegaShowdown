@@ -9,7 +9,7 @@ import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.github.yajatkaul.mega_showdown.advancement.AdvancementHelper;
 import com.github.yajatkaul.mega_showdown.codec.Effect;
 import com.github.yajatkaul.mega_showdown.config.MegaShowdownConfig;
-import com.github.yajatkaul.mega_showdown.gimmick.codec.AspectConditions;
+import com.github.yajatkaul.mega_showdown.codec.AspectConditions;
 import com.github.yajatkaul.mega_showdown.utils.AspectUtils;
 import com.github.yajatkaul.mega_showdown.utils.RegistryLocator;
 import com.mojang.serialization.Codec;
