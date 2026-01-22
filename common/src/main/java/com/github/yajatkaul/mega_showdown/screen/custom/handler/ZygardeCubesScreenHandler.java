@@ -46,6 +46,8 @@ public class ZygardeCubesScreenHandler extends AbstractContainerMenu {
 
     @Override
     public @NotNull ItemStack quickMoveStack(Player playerIn, int invSlot) {
+        if (!playerIn.getInventory().contains(cube)) return ItemStack.EMPTY;
+
         ItemStack newStack = ItemStack.EMPTY;
         Slot slot = this.slots.get(invSlot);
         if (slot.hasItem()) {
@@ -70,6 +72,8 @@ public class ZygardeCubesScreenHandler extends AbstractContainerMenu {
 
     @Override
     public void clicked(int slotId, int dragType, ClickType clickType, Player player) {
+        if (!player.getInventory().contains(cube)) return;
+
         if (slotId >= 0 && slotId < slots.size()) {
             Slot slot = slots.get(slotId);
             if (slot.hasItem() && slot.getItem() == this.cube) {
