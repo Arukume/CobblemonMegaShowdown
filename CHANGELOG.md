@@ -1,2 +1,2 @@
-# 1.6.1+1.7.1-release
-- Fixed showdown loading for new players
+# 1.6.2+1.7.2-release
+- 1.7.2 Compatibility
