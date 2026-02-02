@@ -1,2 +1,2 @@
-# 1.6.6+1.7.3-release
-- Fixed the other dupe issue
+# 1.6.7+1.7.3-release
+- Fixed tera and spread moves not working sometimes

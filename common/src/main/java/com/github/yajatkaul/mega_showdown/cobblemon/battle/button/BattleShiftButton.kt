@@ -31,7 +31,6 @@ class BattleShiftButton(val x: Float, val y: Float, val request: SingleActionReq
             textureHeight = HEIGHT * 2,
             scale = SCALE
         )
-
     }
 
     fun isHovered(mouseX: Double, mouseY: Double): Boolean {
