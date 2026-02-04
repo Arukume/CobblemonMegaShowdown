@@ -14,7 +14,7 @@ public record BattleEffect(
 ) {
     public static final Codec<BattleEffect> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             BattleEffectType.CODEC.fieldOf("type").forGetter(BattleEffect::type),
-            Codec.INT.fieldOf("tickInterval").forGetter(BattleEffect::tickInterval),
+            Codec.INT.optionalFieldOf("tickInterval", 0).forGetter(BattleEffect::tickInterval),
             Codec.STRING.fieldOf("name").forGetter(BattleEffect::name),
             ResourceLocation.CODEC.fieldOf("id").forGetter(BattleEffect::id)
     ).apply(instance, BattleEffect::new));
