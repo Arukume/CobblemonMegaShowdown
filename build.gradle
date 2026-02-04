@@ -96,7 +96,7 @@ publishMods {
     dryRun = modrinthToken == null || curseforgeToken == null
 
     def cfOptions = curseforgeOptions {
-        accessToken = env.CURSEFORGE_TOKEN.value
+        accessToken = curseforgeToken
         projectId = project.curseforge_id
         clientRequired = true
         serverRequired = true
@@ -105,7 +105,7 @@ publishMods {
     }
 
     def mrOptions = modrinthOptions {
-        accessToken = env.MODRINTH_TOKEN.value
+        accessToken = modrinthToken
         projectId = project.modrinth_id
         minecraftVersions.add("1.21.1")
     }
