@@ -25,6 +25,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 
 import java.util.List;
+import java.util.Optional;
 
 public class DuFusion extends ToolTipItem {
     private final List<String> fusions1;
@@ -111,9 +112,9 @@ public class DuFusion extends ToolTipItem {
                 playerPartyStore.add(pokemonInside);
 
                 if (pokemons1.contains(pokemonInside.getSpecies().getName())) {
-                    Effect.getEffect(effectId1).revertEffects(pokemon, revertAspect1, null);
+                    Effect.getEffect(effectId1).revertEffects(pokemon, revertAspect1, Optional.empty(), null);
                 } else {
-                    Effect.getEffect(effectId2).revertEffects(pokemon, revertAspect2, null);
+                    Effect.getEffect(effectId2).revertEffects(pokemon, revertAspect2, Optional.empty(), null);
                 }
 
                 pokemon.setTradeable(true);
@@ -131,9 +132,9 @@ public class DuFusion extends ToolTipItem {
                 pokemon.setTradeable(false);
 
                 if (pokemons1.contains(pokemonStored.getSpecies().getName())) {
-                    Effect.getEffect(effectId1).applyEffects(pokemon, applyAspect1, null);
+                    Effect.getEffect(effectId1).applyEffects(pokemon, applyAspect1, Optional.empty(), null);
                 } else {
-                    Effect.getEffect(effectId2).applyEffects(pokemon, applyAspect2, null);
+                    Effect.getEffect(effectId2).applyEffects(pokemon, applyAspect2, Optional.empty(), null);
                 }
 
             } else if (pokemonStored == null &&

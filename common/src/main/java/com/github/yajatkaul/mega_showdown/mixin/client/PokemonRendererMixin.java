@@ -42,17 +42,15 @@ IK this code is shit but im bored doing this so ill fix it later
 public class PokemonRendererMixin {
     @Unique
     private final RenderContext mega_showdown$context = new RenderContext();
-
-    @Unique
-    private DynamaxCloudsLayer mega_showdown$dynamaxCloudsLayer = new DynamaxCloudsLayer();
-    @Unique
-    private TeraHatsLayer mega_showdown$teraHatsLayer = new TeraHatsLayer();
-
     //Tera crystal
     @Unique
     private final ResourceLocation mega_showdown$teraCrystalPoserId = ResourceLocation.fromNamespaceAndPath("cobblemon", "terastal_transformation");
     @Unique
     private final Set<String> mega_showdown$teraCrystalAspects = new HashSet<>();
+    @Unique
+    private DynamaxCloudsLayer mega_showdown$dynamaxCloudsLayer = new DynamaxCloudsLayer();
+    @Unique
+    private TeraHatsLayer mega_showdown$teraHatsLayer = new TeraHatsLayer();
     //
 
     @Inject(method = "<init>", at = @At(value = "RETURN"))

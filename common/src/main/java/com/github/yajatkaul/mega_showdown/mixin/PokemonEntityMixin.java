@@ -23,6 +23,17 @@ import java.util.concurrent.CompletableFuture;
 
 @Mixin(value = PokemonEntity.class, remap = false)
 public abstract class PokemonEntityMixin implements PokemonEntityDuck {
+    @Unique
+    private final TeraCrystalState mega_showdown$teraCrystalState = new TeraCrystalState();
+    @Unique
+    private boolean mega_showdown$teraCrystalPlayed = false;
+    @Unique
+    private boolean mega_showdown$teraCrystalPass = false;
+    @Unique
+    private double mega_showdown$animCrystalSeconds = 0.0;
+    @Unique
+    private long mega_showdown$lastCrystalTimeNs = -1L;
+
     @Inject(
             method = "recallWithAnimation",
             at = @At("HEAD"),
@@ -85,17 +96,6 @@ public abstract class PokemonEntityMixin implements PokemonEntityDuck {
             cir.cancel();
         }
     }
-
-    @Unique
-    private final TeraCrystalState mega_showdown$teraCrystalState = new TeraCrystalState();
-    @Unique
-    private boolean mega_showdown$teraCrystalPlayed = false;
-    @Unique
-    private boolean mega_showdown$teraCrystalPass = false;
-    @Unique
-    private double mega_showdown$animCrystalSeconds = 0.0;
-    @Unique
-    private long mega_showdown$lastCrystalTimeNs = -1L;
 
     @Override
     public TeraCrystalState mega_showdown$getTeraCrystalState() {
