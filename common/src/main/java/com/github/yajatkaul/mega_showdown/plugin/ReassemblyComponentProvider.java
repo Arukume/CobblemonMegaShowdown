@@ -32,11 +32,11 @@ public enum ReassemblyComponentProvider implements IBlockComponentProvider, ISer
                 int remainingTicks = maxCookTime - cookTime;
 
                 IElementHelper elements = IElementHelper.get();
-                IElement icon = elements.item(new ItemStack(MegaShowdownItems.ZYGARDE_CUBE), 0.5f).size(new Vec2(10, 10)).translate(new Vec2(0, -1));;
+                IElement icon = elements.item(new ItemStack(MegaShowdownItems.ZYGARDE_CUBE), 0.5f).size(new Vec2(10, 10)).translate(new Vec2(0, -1));
                 iTooltip.add(icon);
                 if (state == 0) {
                     iTooltip.append(Component.translatable("ui.mega_showdown.idle"));
-                } else if (state == 1){
+                } else if (state == 1) {
                     iTooltip.append(Component.literal(formatTime(remainingTicks)));
                 } else {
                     iTooltip.append(Component.translatable("ui.mega_showdown.ready"));
