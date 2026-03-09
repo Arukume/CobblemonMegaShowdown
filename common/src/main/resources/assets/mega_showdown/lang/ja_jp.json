@@ -137,7 +137,7 @@
   "item.mega_showdown.brendan_mega_cuff": "ユウキのライブリング",
   "tooltip.mega_showdown.brendan_mega_cuff.tooltip": "§7通常メガストーンと反応して ポケモンをメガシンカさせる 未知のパワーを秘めたリング。",
   "item.mega_showdown.lysandre_ring": "フラダリのメガリング",
-  "tooltip.mega_showdown.lysandre_ring.tooltip": "§7通常メガストーンと反応して ポケモンをメガシンカさせる 未知のパワーを秘めリング。",
+  "tooltip.mega_showdown.lysandre_ring.tooltip": "§7通常メガストーンと反応して ポケモンをメガシンカさせる 未知のパワーを秘めたリング。",
   "item.mega_showdown.maxie_glasses": "マツブサのメガメガネ",
   "tooltip.mega_showdown.maxie_glasses.tooltip": "§7通常メガストーンと反応して ポケモンをメガシンカさせる 未知のパワーを秘めたメガネ。",
   "item.mega_showdown.lisia_mega_tiara": "ルチアのメガティアラ",
@@ -651,5 +651,7 @@
   "item.mega_showdown.tera_pouch_black": "テラポーチブラック",
   "tooltip.mega_showdown.tera_pouch.tooltip": "§7テラピースをまとめて保管できるポーチ。",
   
-  "config.jade.plugin_mega_showdown.jade": "MSD Jade"
+  "config.jade.plugin_mega_showdown.jade": "MSD Jade",
+  "ui.mega_showdown.idle": "待機中",
+  "ui.mega_showdown.ready": "準備完了"
 }
